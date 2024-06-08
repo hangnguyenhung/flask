@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}{{title}}{% endblock title %}
+{% block content %}
+<h1 class="text-center mt-2 mb-2">Quản lý sản phẩm</h1>
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th scope="col">STT</th>
+            <th scope="col">Tên sản phẩn</th>
+            <th scope="col">Giá</th>
+            <th scope="col">Hình ảnh</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in products %}
+        <tr>
+            <th scope="row">1</th>
+            <td>{{data.name}}</td>
+            <td>{{data.price}}</td>
+            <td>
+                {% if data.image %}
+                <img class="card-img img-fluid" style="width: 50px"
+                    src="{{ url_for('static', filename='uploads/' + data.image) }}" alt="Ảnh sản phẩm">
+                {% endif %}
+            </td>
+            <td>
+                <form method="POST" action="{{ url_for('product_bp.delete_product', product_id=data.id) }}"
+                    style="display: inline-block;">
+                    <a href="{{ url_for('product_bp.edit_product', product_id=data.id) }}"
+                        class="btn btn-info btn-sm">Chỉnh sửa</a>
+                    <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h1 class="text-center mt-2">Thêm sản phẩm</h1>
+<form method="POST" action="/add_product" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="name">Tên sản phẩm</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Nhập tên sản phẩm" required>
+    </div>
+    <div class="form-group">
+        <label for="image">Hình ảnh</label>
+        <input type="file" class="form-control" id="image" name="image" placeholder="Chọn hình ảnh">
+    </div>
+    <div class="form-group">
+        <label for="desc">Mô tả</label>
+        <textarea class="form-control" id="desc" name="desc" rows="3" placeholder="Nhập mô tả" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="price">Giá</label>
+        <input type="number" class="form-control" id="price" name="price" placeholder="Nhập giá sản phẩm" step="0.01"
+            required>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Thêm</button>
+</form>
+{% endblock content %}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>{% block title %}{% endblock title %}</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ url_for('home') }}">Sản phẩm</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        {% if session.get('user_id') %}
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('product_bp.management_product') }}">Quản lý sản
+                                phẩm</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('order_bp.management_order') }}">Quản lý đơn hàng</a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a style="white-space: nowrap;" class="nav-link" href="{{url_for('user_bp.cart')}}">
+                                Giỏ hàng
+                                {% if session.get('cart') %}
+                                <span class="badge bg-danger">
+                                    {{ session['cart'] | length }}
+                                </span>
+                                {% endif %}
+                            </a>
+                        </li>
+                        {% if session.get('user_id') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('user_bp.logout') }}">Đăng xuất</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('user_bp.login') }}">Đăng nhập</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+
+                    {% if request.path == '/' %}
+                    <form class="d-flex" action="/search" method="get">
+                        <input class="form-control me-2" type="search" name="keyword" placeholder="Tên sản phẩm..."
+                            aria-label="Search" />
+                        <button class="btn btn-outline-success" style="width: 200px" type="submit">
+                            Tìm kiếm
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+        {% block content %}{% endblock content %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
